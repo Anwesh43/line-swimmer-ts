@@ -207,3 +207,25 @@ class LineSwimmer {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    ls : LineSwimmer = new LineSwimmer()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.ls.draw(context)
+    }
+
+    handleTap(cb  : Function) {
+        this.ls.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.ls.updatge(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
