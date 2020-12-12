@@ -1,7 +1,8 @@
 const w : number = window.innerWidth 
 const h : number = window.innerHeight 
 const parts : number = 3 
-const scGap : number = 0.02 / parts 
+const kParts : number = 4 
+const scGap : number = 0.02 / (parts + kParts) 
 const strokeFactor : number = 90 
 const sizeFactor : number = 4.9 
 const delay : number = 20 
@@ -13,7 +14,7 @@ const colors : Array<string> = [
     "#3F51B5"
 ]
 const backColor : string = "#BDBDBD"
-const kParts : number = 4 
+
 
 class ScaleUtil {
 
@@ -22,7 +23,7 @@ class ScaleUtil {
     }
 
     static divideScale(scale : number, i : number, n : number) : number {
-        return Math.min(1 / n, ScaleUtil.divideScale(scale, i, n)) * n 
+        return Math.min(1 / n, ScaleUtil.maxScale(scale, i, n)) * n 
     }
 
     static sinify(scale : number) : number {
@@ -49,7 +50,7 @@ class DrawingUtil {
             sf += ScaleUtil.sinify(ScaleUtil.divideScale(sc2, j, kParts))
         }
         context.save()
-        context.translate(w / 2, h - size)
+        context.translate(w / 2, (h - size) * (1 - sc2))
         for (var j = 0; j < 2; j++) {
             context.save()
             context.rotate((1 - 2 * j) * (Math.PI / 4) * sf)
